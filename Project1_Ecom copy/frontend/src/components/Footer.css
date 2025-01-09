@@ -1,0 +1,120 @@
+/* General Footer Styling */
+.footer {
+    background-color: #ffffff;
+    color: #000;
+    padding: 2rem 1rem;
+    font-family: 'Arial', sans-serif;
+    width: 80vw;
+  }
+  
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  
+  /* Footer Sections */
+  .footer-section {
+    flex: 1;
+    min-width: 250px;
+    margin: 1rem;
+  }
+  
+  .footer-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #000;
+    text-align: left;
+  }
+  
+  .footer-links {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-link {
+    text-decoration: none;
+    color: #000;
+    font-size: 1rem;
+    display: block;
+    margin: 0.5rem 0;
+    transition: color 0.3s;
+  }
+  
+  .footer-link:hover {
+    color: #363636;
+  }
+  
+  /* Social Links */
+  .footer-social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .footer-social-link {
+    text-decoration: none;
+    color: #000;
+    font-size: 1rem;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #000;
+    border-radius: 2px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .footer-social-link:hover {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  /* Footer Bottom */
+  .footer-bottom {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  .footer-bottom-text {
+    color: #2e2e2e;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .footer-container {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .footer-section {
+      margin: 1rem 0;
+    }
+  
+    .footer-social {
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .footer-title {
+      font-size: 1.2rem;
+    }
+  
+    .footer-text,
+    .footer-link,
+    .footer-social-link {
+      font-size: 0.9rem;
+    }
+  
+    .footer-bottom-text {
+      font-size: 0.8rem;
+    }
+  }
+  
