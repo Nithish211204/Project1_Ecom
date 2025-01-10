@@ -12,6 +12,7 @@ import Navbar_Customer from './components/Navbar_Customer';
 import Cart from './components/Cart'; 
 import Footer from './components/Footer';  
 
+
 // import Update from './components/AdminProducts/UpdateProduct';
 function App() {
   const token = localStorage.getItem("authToken");
