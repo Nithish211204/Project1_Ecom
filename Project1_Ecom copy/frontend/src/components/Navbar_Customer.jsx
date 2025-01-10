@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    location.reload()
   };
 
   return (
@@ -23,9 +28,9 @@ const Navbar = () => {
         {/* Menu Items */}
         <div className={`menu ${isMenuOpen ? "open" : ""}`}>
           <ul className="menu-items">
-            <li>Home</li>
+            <li><Link to ="/">Home</Link></li>
             <li>About</li>
-            <li>Products</li>
+            <li><Link to ="/product">Products</Link></li>
           </ul>
           <div className="auth-buttons">
             {/* <button className="login-btn">Login</button> */}

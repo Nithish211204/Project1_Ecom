@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import SignUp from './components/SignUp';
-import Login from './components/Login';
+import LoginDetails from "./components/LoginandSignUp/UserDetails";
+import Login from './components/LoginandSignUp/Login';
 import Home from './components/HomePage/Home';
 import Delete from './components/AdminProducts/ProductList';
 import Add from './components/AdminProducts/AddProduct';
@@ -24,11 +24,12 @@ function App() {
         <Routes>
         {/* <Route path="/update" element={<Update/>}/> */}
         <Route path="/cart" element={<Cart/>}/>
+        <Route path="/details" element={ <LoginDetails /> } />
         <Route path="/product" element={<ProductPage/>}/>
         <Route path="/add" element={<Add/>}/>
           <Route path="/delete" element={<Delete/>}/>
         <Route path="/" element={<Home/>} />
-          <Route path="/signup" element={<SignUp />} />
+          {/* <Route path="/signup" element={<SignUp />} /> */}
          <Route path="/admin" element={<Admin/>}/>
           <Route path="/login" element={<Login />} />
           
