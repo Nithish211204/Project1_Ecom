@@ -1,0 +1,99 @@
+/* General styles */
+/* body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  } */
+  
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px 20px 20px;
+    background-color: #ccffcc;
+    border-radius: 10px;
+    margin: 20px;
+  }
+  
+  .hero-content {
+    flex: 1;
+    max-width: 550px;
+    padding-left: 40px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin: 0;
+    color: black;
+  }
+  
+  .hero-content h1 span {
+    color: #008000;
+    font-weight: bold;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+    color: #555;
+    margin: 10px 0 20px;
+  }
+  
+  .hero-btn {
+    padding: 10px 20px;
+    background-color: #007d00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .hero-btn:hover {
+    background-color: #005500;
+  }
+  
+ .hero-image {
+    flex: 1;
+    text-align: right;
+    padding-right: 30px;
+  }
+  
+  .hero-image img {
+    max-width: 80%;
+    border-radius: 10px;
+  } 
+  
+  /* Responsive Styles */
+  @media screen and (max-width: 768px) {
+    .hero {
+      flex-direction: column-reverse;
+      text-align: center;
+    }
+  
+    .hero-content {
+      margin-bottom: 20px;
+      padding-left: 0;
+      text-align: left;
+    }
+  
+    .hero-content h1 {
+      font-size: 1.8rem;
+    }
+  
+    .hero-content p {
+      font-size: 0.9rem;
+    }
+  
+    .hero-btn {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+    }
+    .hero-image {
+        padding-right: 0px;
+      }
+      
+      .hero-image img {
+        max-width: 100%;
+      }
+  }
+  
