@@ -28,6 +28,7 @@ const Navbar = () => {
             <li>About</li>
             <li><Link to ="/product">Products</Link></li>
           </ul>
+          
           <div className="auth-buttons">
             <button className="login-btn"><Link to="/login">Login</Link></button>
             {/* <button className="register-btn">Register</button> */}

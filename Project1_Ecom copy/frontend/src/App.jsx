@@ -21,6 +21,7 @@ function App() {
       {(!token) ? <Navbar />: <Navbar_Customer /> }    
      
       <div>
+        
         <Routes>
         {/* <Route path="/update" element={<Update/>}/> */}
         <Route path="/cart" element={<Cart/>}/>
