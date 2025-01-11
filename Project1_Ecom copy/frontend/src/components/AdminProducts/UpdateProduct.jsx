@@ -1,6 +1,30 @@
 import React from 'react';
 
 const UpdateProduct = () => {
+
+ const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
+    // Fetch products when the component mounts
+    const fetchProducts = async () => {
+        const token = localStorage.getItem("authToken");
+        try {
+            const response = await fetch("http://localhost:8080/adddelete", {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setProducts(data); // Set the products to state
+            } else {
+                console.error("Error fetching products");
+            }
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    };
+
+
     return (
         <div>
             <h1>Update Product</h1>
