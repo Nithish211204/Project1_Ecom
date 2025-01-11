@@ -5,8 +5,10 @@ import LoginDetails from "./components/LoginandSignUp/UserDetails";
 import Login from './components/LoginandSignUp/Login';
 import Home from './components/HomePage/Home';
 import Delete from './components/AdminProducts/ProductList';
+import Vendor from './components/AdminProducts/Vendors';
 import Add from './components/AdminProducts/AddProduct';
 import Admin from './components/AdminProducts/AdminDashBoard';
+import AOders from './components/AdminProducts/AdminOrder';
 import ProductPage from './components/ProductPage';
 import Navbar_Customer from './components/Navbar_Customer';
 import Cart from './components/Cart'; 
@@ -24,7 +26,8 @@ function App() {
       <div>
         
         <Routes>
-        {/* <Route path="/update" element={<Update/>}/> */}
+        <Route path="/aorder" element={<AOders/>}/>
+        <Route path="/vendor" element={<Vendor/>}/>
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/details" element={ <LoginDetails /> } />
         <Route path="/product" element={<ProductPage/>}/>

@@ -25,12 +25,15 @@ app.use('/auth', authRoutes);
 app.use('/adddelete',adddeleteRoutes);
 app.use('/cart',Cart);
 app.get("/products",  async (req, res) => {
-  try {
-      const products = await Product.find(); 
-      res.status(200).json(products); 
-  } catch (error) {
-      res.status(500).json({ message: "Error fetching products", error });
-  }
+    try {
+        // Fetch only available products from the database
+        const products = await Product.find({ available: true });
+
+        res.status(200).json(products); // Send back the filtered products
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        res.status(500).json({ message: "Error fetching products", error });
+    }
 });
 
 

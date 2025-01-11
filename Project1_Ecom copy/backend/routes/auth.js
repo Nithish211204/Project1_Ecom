@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const Admin = require("../models/Admin");
+const Vendor =require("../models/Vendor")
+const { authenticate, authorizeRole } = require("./middleware"); 
 dotenv.config();
 
 const router = express.Router();
@@ -49,12 +51,18 @@ router.post("/login", async (req, res) => {
     if (user) {
       // If found in Admin collection, set role to 'admin'
       role = "admin";
-    } else {
+    }else {
+      user = await Vendor.findOne({ phone });
+      if(user){
+      role="vendor";}
+    
+
+    else {
       // If not found in Admin, check the User collection
       user = await User.findOne({ phone });
       role = "customer"; // Default role is 'customer' if found in User collection
     }
-
+  } 
     if (!user) {
       // If not found in either collection, return isNewUser as true
       return res.status(200).json({ isNewUser: true });
@@ -67,6 +75,24 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+router.post("/add", authenticate, authorizeRole("admin"), async (req, res) => {
+  const { phone, name, location, pincode } = req.body;
+
+  try {
+      // Check if the vendor with the phone already exists
+      const existingVendor = await Vendor.findOne({ phone });
+      if (existingVendor) {
+          return res.status(400).json({ message: "Vendor with this phone already exists." });
+      }
+
+      const vendor = new Vendor({ phone, name, location, pincode });
+      await vendor.save();
+      res.status(201).json({ message: "Vendor added successfully", vendor });
+  } catch (error) {
+      console.error("Error adding vendor:", error);
+      res.status(500).json({ message: "Error adding vendor", error });
   }
 });
 

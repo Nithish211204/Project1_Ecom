@@ -57,8 +57,8 @@ const AddProduct = () => {
         navigate("/delete");
         
     };
-    const goToUpdate = () => {
-        navigate("/update");
+    const goToVendors = () => {
+        navigate("/vendor");
 };
 
     return (
@@ -66,8 +66,8 @@ const AddProduct = () => {
             <button  onClick={goToDelete}>
                 Delete Product
             </button>  
-             <button  onClick={goToUpdate}>
-                Update Product
+             <button  onClick={goToVendors}>
+                Vendor Adding
             </button>
             <h2>Add Product</h2> 
         <form onSubmit={handleSubmit} style={styles.form}>
