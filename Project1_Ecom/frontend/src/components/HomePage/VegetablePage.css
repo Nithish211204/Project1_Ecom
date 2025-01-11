@@ -1,0 +1,121 @@
+/* General Styles */
+/* body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+  } */
+  
+  /* Section Styles */
+  .vegetables-collection {
+    text-align: center;
+    background-color: #ccffcc;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 1200px;
+    margin: auto;
+    width: 90vw;
+  }
+  
+  .vegetables-collection h1 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #333;
+    text-align: left;
+  }
+  
+  /* Grid Styles */
+  .vegetables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  /* Card Styles */
+  .vegetable-card {
+    /* background: white; */
+    /* border: 1px solid #ccc; */
+    /* border-radius: 10px; */
+    /* padding: 15px; */
+    text-align: center;
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  }
+  
+  .vegetable-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .vegetable-card h2 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0px;
+  }
+  
+  .vegetable-card p {
+    font-size: 1rem;
+    color: #666;
+    margin: 5px;
+  }
+  
+  .vegetable-card button {
+    background-color: #007d00;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .vegetable-card button:hover {
+    background-color: #45a049;
+  }
+  
+  /* View More Button */
+  .view-more {
+    margin-top: 20px;
+    background-color: #007d00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .view-more:hover {
+    background-color: #45a049;
+  }
+  
+  /* Responsive Design */
+  /* Responsive Design */
+@media (max-width: 600px) {
+  .vegetables-grid {
+    grid-template-columns: repeat(2, 1fr); /* Ensures two cards per row */
+    gap: 10px; /* Adjust the gap between cards for better spacing */
+  }
+
+  .vegetable-card img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .vegetable-card h2 {
+    font-size: 1rem;
+  }
+
+  .vegetable-card p {
+    font-size: 0.9rem;
+  }
+  .vegetable-card button {
+    font-size: 10px;
+  }
+
+  .view-more {
+    padding: 8px 16px;
+  }
+}
