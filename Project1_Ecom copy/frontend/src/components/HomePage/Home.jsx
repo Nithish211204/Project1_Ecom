@@ -2,6 +2,7 @@ import React from 'react';
 import HomeCarousel from '../HomeCarasoul';  
 import Hero from './Hero';
 import Collection from './Collection';
+import VegetablePage from './VegetablePage';
  // Import the CSS for Home page
 
 const Home = () => {
@@ -16,6 +17,7 @@ return (
       {/* <h1>Welcome to the Legumes Page</h1> */}
       <Hero />
       <Collection />
+      <VegetablePage />
       {/* <HomeCarousel /> */}
       
     </div>
