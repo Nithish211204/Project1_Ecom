@@ -48,17 +48,17 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleLogin} className="login-form">
         <input
           type="text"
           placeholder="Enter your phone number"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
         />
-        <button type="submit">Login</button>
+        <button className="login-btn" type="submit">Login</button>
       </form>
 
       <ToastContainer /> {/* Add ToastContainer to render the toast notifications */}
