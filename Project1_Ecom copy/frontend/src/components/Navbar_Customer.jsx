@@ -53,8 +53,3 @@ export default Navbar;
 
 
 
-const handleLogout = () => {
-  localStorage.removeItem("authToken");
-  location.reload()
-};
-
