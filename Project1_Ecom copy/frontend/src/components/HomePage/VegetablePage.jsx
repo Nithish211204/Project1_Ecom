@@ -1,13 +1,18 @@
 import React from "react";
 import "./VegetablePage.css";
+import { useNavigate } from "react-router-dom";
 
 const VegetablePage = () => {
+  const navigate = useNavigate();
   const vegetables = [
     { id: 1, name: "Tomato", price: "₹50", image: "/src/assets/tomato.jpg" },
     { id: 2, name: "Brinjal", price: "₹50", image: "/src/assets/brinjal.jpg" },
     { id: 3, name: "Capsicum", price: "₹50", image: "/src/assets/capsicam.jpg" },
     { id: 4, name: "Carrot", price: "₹50", image: "/src/assets/Carrot.jpeg" },
   ];
+  const goToProducts = () => {
+    navigate("/product");
+};
 
   return (
     <section className="vegetables-collection">
@@ -22,7 +27,7 @@ const VegetablePage = () => {
           </div>
         ))}
       </div>
-      <button className="view-more">View More</button>
+      <button className="view-more" onClick={goToProducts}>View More</button>
     </section>
   );
 };
