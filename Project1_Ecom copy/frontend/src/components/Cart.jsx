@@ -10,37 +10,39 @@ const Cart = () => {
   // Fetch Cart Items
   const fetchCartItems = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/cart', {
+      const userId = localStorage.getItem('userId'); // Assume userId is stored in localStorage
+      const response = await axios.get(`http://localhost:8080/cart`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      setCartItems(response.data.items || []);
+      setCartItems(response.data || []);
       setError('');
     } catch (err) {
       setError(err.response?.data?.message || 'Error fetching cart');
     }
   };
-// Update Quantity (Increase/Decrease)
-const updateQuantity = async (productId, action) => {
+
+  // Update Quantity (Increase/Decrease)
+  const updateQuantity = async (productId, action) => {
     try {
       const endpoint =
         action === 'increase'
           ? `http://localhost:8080/cart/increase/${productId}`
           : `http://localhost:8080/cart/decrease/${productId}`;
-  
+
       const response = await axios.post(endpoint, {}, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       // Update cart items in state dynamically
       setCartItems((prevItems) =>
         prevItems.map((item) =>
-          item.product._id === productId
-            ? { ...item, quantity: response.data.updatedQuantity }  // Use updated quantity
+          item.productId === productId
+            ? { ...item, quantity: response.data.updatedQuantity } // Use updated quantity
             : item
         )
       );
@@ -49,7 +51,6 @@ const updateQuantity = async (productId, action) => {
       setError(err.response?.data?.message || 'Error updating quantity');
     }
   };
-  
 
   // Remove Item from Cart
   const removeItemFromCart = async (productId) => {
@@ -62,7 +63,7 @@ const updateQuantity = async (productId, action) => {
 
       // Remove item from state
       setCartItems((prevItems) =>
-        prevItems.filter((item) => item.product._id !== productId)
+        prevItems.filter((item) => item.productId !== productId)
       );
     } catch (err) {
       setError(err.response?.data?.message || 'Error removing item');
@@ -87,53 +88,53 @@ const updateQuantity = async (productId, action) => {
             <ul className="list-group">
               {cartItems.map((item) => (
                 <li
-                  key={item.product._id}
+                  key={item.productId}
                   className="list-group-item d-flex justify-content-between align-items-center mb-3"
                 >
                   {/* Product Image */}
                   <img
-                    src={item.product.image || 'https://via.placeholder.com/100'}
-                    alt={item.product.name || 'Product Image'}
+                    src={item.image || 'https://via.placeholder.com/100'}
+                    alt={item.name || 'Product Image'}
                     className="img-thumbnail"
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                   />
 
                   {/* Product Details */}
                   <div className="ms-3 flex-grow-1">
-                    <h5 className="mb-1">{item.product.name}</h5>
-                    <p className="mb-0">Price: ₹{item.product.price}</p>
+                    <h5 className="mb-1">{item.name}</h5>
+                    <p className="mb-0">Price: ₹{item.price}</p>
                     <p className="mb-0">Quantity: {item.quantity}</p>
                   </div>
 
-                  <div className='text-center pe-3'>
+                  <div className="text-center pe-3">
                     {/* Quantity Controls */}
-                  <div className="btn-group mb-2 ">
-                    <button
-                      onClick={() => updateQuantity(item.product._id, 'decrease')}
-                      className="btn btn-outline-secondary btn-sm"
-                      disabled={item.quantity <= 1}
-                    >
-                      -
-                    </button>
-                    <button className="btn btn-outline-secondary btn-sm" disabled>
-                      {item.quantity}
-                    </button>
-                    <button
-                      onClick={() => updateQuantity(item.product._id, 'increase')}
-                      className="btn btn-outline-secondary btn-sm"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <br />
+                    <div className="btn-group mb-2">
+                      <button
+                        onClick={() => updateQuantity(item.productId, 'decrease')}
+                        className="btn btn-outline-secondary btn-sm"
+                        disabled={item.quantity <= 1}
+                      >
+                        -
+                      </button>
+                      <button className="btn btn-outline-secondary btn-sm" disabled>
+                        {item.quantity}
+                      </button>
+                      <button
+                        onClick={() => updateQuantity(item.productId, 'increase')}
+                        className="btn btn-outline-secondary btn-sm"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <br />
 
-                  {/* Remove Button */}
-                  <button
-                    onClick={() => removeItemFromCart(item.product._id)}
-                    className="btn btn-danger btn-sm "
-                  >
-                    Remove
-                  </button>
+                    {/* Remove Button */}
+                    <button
+                      onClick={() => removeItemFromCart(item.productId)}
+                      className="btn btn-danger btn-sm"
+                    >
+                      Remove
+                    </button>
                   </div>
                 </li>
               ))}
@@ -150,7 +151,7 @@ const updateQuantity = async (productId, action) => {
                   <span>
                     ₹
                     {cartItems.reduce(
-                      (total, item) => total + item.product.price * item.quantity,
+                      (total, item) => total + item.price * item.quantity,
                       0
                     )}
                   </span>
@@ -165,7 +166,7 @@ const updateQuantity = async (productId, action) => {
                   <span>
                     ₹
                     {cartItems.reduce(
-                      (total, item) => total + item.product.price * item.quantity,
+                      (total, item) => total + item.price * item.quantity,
                       0
                     )}
                   </span>
