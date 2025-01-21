@@ -8,7 +8,7 @@
   align-items: center;
   width: 90vw;
   border-radius: 30px;
-  margin: 10px;
+  margin: 20px;
 }
 
 .navbar-container {
@@ -73,7 +73,7 @@
   font-size: 1rem;
 }
 .menu-items li a {
-  color : white;
+  color: white;
   text-decoration: none;
 }
 
@@ -83,19 +83,22 @@
   gap: 10px;
 }
 
-.auth-buttons .login-btn,
-.register-btn {
-  background-color: white;
-  color: #007d00;
+.login-btn, .logout-btn {
+  /* background-color: white; */
+  /* color: #007d00; */
   border: none;
   border-radius: 20px;
   padding: 5px 15px;
   font-size: 0.9rem;
   cursor: pointer;
+  background-color: white;
 }
-.auth-buttons .login-btn:hover{
-  background-color: rgb(160, 255, 157);
+.login-btn a, .logout-btn a{
+  color: #007d00;
+  background-color: white;
+  text-decoration: none;
 }
+
 /* Hamburger Menu */
 .hamburger {
   display: none;
@@ -132,7 +135,7 @@
     padding: 10px;
     z-index: 10;
   }
-  .login-btn, .register-btn {
+  .login-btn, .logout-btn {
     color: black;
   }
 
@@ -150,9 +153,8 @@
   .menu-items li {
     margin: 5px 0;
   }
-  .menu-items li a {
-    color : black;
-    /* text-decoration: none; */
+  .menu-items li a{
+    color: black;
   }
 
   .auth-buttons {
