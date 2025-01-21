@@ -34,7 +34,7 @@ const Navbar = () => {
           </ul>
           <div className="auth-buttons">
             {/* <button className="login-btn">Login</button> */}
-            <button onClick={handleLogout}><Link to="/">Logout</Link></button>
+            <button className="logout-btn" onClick={handleLogout}><Link to="/">Logout</Link></button>
           </div>
         </div>
 
@@ -52,4 +52,9 @@ export default Navbar;
 
 
 
+
+const handleLogout = () => {
+  localStorage.removeItem("authToken");
+  location.reload()
+};
 
