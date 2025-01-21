@@ -4,7 +4,96 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;/* CSS for Login Form */
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  min-height: 50vh;
+  background-color: #f9f9f9;
+  padding: 20px;
+  /* font-family: Arial, sans-serif; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 16px;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #007d00;
+  box-shadow: 0 0 4px rgba(0, 255, 13, 0.5);
+}
+
+.login-form .login-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #007d00;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-form .login-btn:hover {
+  background-color: #007d00c2;
+}
+
+.login-form .login-btn:active {
+  background-color: #005300;
+}
+
+/* Error Message */
+.login-container p {
+  margin: 10px 0;
+  color: red;
+  font-size: 14px;
+  text-align: center;
+}
+
+  
+  /* Toast Notifications */
+  .Toastify__toast-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+  }
+  
+  .Toastify__toast {
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  
   min-height: 50vh;
   background-color: #f9f9f9;
   padding: 20px;
