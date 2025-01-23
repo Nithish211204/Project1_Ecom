@@ -151,4 +151,21 @@ router.post('/decrease/:productId', authenticate, async (req, res) => {
     }
 });
 
+router.delete('/clear', authenticate, async (req, res) => {
+    try {
+      const cart = await Cart.findOne({ userId: req.user.id });
+      if (!cart) return res.status(404).send({ message: 'Cart not found' });
+  
+      cart.items = [];
+      await cart.save();
+  
+      res.send({ message: 'Cart cleared successfully', cart });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server Error');
+    }
+  });
+  
+
+
 module.exports = router;

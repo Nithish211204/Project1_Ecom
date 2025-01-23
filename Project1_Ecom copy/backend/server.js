@@ -7,6 +7,7 @@ const adddeleteRoutes=require('./routes/AddDelete');
 const Product=require('./models/Product')
 const Cart=require('./routes/cart')
 const User = require('./models/User');
+const Order=require('./routes/order')
 dotenv.config();
 
 const app = express();
@@ -23,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI)
 // Routes
 app.use('/auth', authRoutes);
 app.use('/adddelete',adddeleteRoutes);
+app.use('/orders',Order)
 app.use('/cart',Cart);
 app.get("/products",  async (req, res) => {
     try {

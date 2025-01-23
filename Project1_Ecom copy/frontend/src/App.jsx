@@ -13,6 +13,7 @@ import ProductPage from './components/ProductPage';
 import Navbar_Customer from './components/Navbar_Customer';
 import Cart from './components/Cart'; 
 import Footer from './components/Footer';  
+import Order from './components/Order'
 
 
 // import Update from './components/AdminProducts/UpdateProduct';
@@ -26,6 +27,7 @@ function App() {
       <div>
         
         <Routes>
+        <Route path="/order" element={<Order/>}/>
         <Route path="/aorder" element={<AOders/>}/>
         <Route path="/vendor" element={<Vendor/>}/>
         <Route path="/cart" element={<Cart/>}/>

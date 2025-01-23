@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [error, setError] = useState('');
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const token = localStorage.getItem('authToken');
+  const navigate = useNavigate();
 
   // Fetch Cart Items
   const fetchCartItems = async () => {
     try {
-      const userId = localStorage.getItem('userId'); // Assume userId is stored in localStorage
       const response = await axios.get(`http://localhost:8080/cart`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-
       setCartItems(response.data || []);
       setError('');
     } catch (err) {
@@ -33,16 +34,13 @@ const Cart = () => {
           : `http://localhost:8080/cart/decrease/${productId}`;
 
       const response = await axios.post(endpoint, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Update cart items in state dynamically
       setCartItems((prevItems) =>
         prevItems.map((item) =>
           item.productId === productId
-            ? { ...item, quantity: response.data.updatedQuantity } // Use updated quantity
+            ? { ...item, quantity: response.data.updatedQuantity }
             : item
         )
       );
@@ -56,19 +54,99 @@ const Cart = () => {
   const removeItemFromCart = async (productId) => {
     try {
       await axios.delete(`http://localhost:8080/cart/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Remove item from state
       setCartItems((prevItems) =>
         prevItems.filter((item) => item.productId !== productId)
       );
     } catch (err) {
       setError(err.response?.data?.message || 'Error removing item');
     }
+  };const handleCheckout = async () => {
+    if (!selectedPaymentMethod) {
+      toast.error('Please select a payment method');
+      return;
+    }
+  
+    try {
+      const payload = {
+        items: cartItems.map((item) => ({
+          product: {
+            _id: item.productId,
+            name: item.name,
+            image: item.image,
+            price: item.price,
+            quantity: item.quantity,
+          },
+        })),
+        paymentMethod: selectedPaymentMethod,
+      };
+  
+      // Place the order
+      const response = await axios.post(
+        'http://localhost:8080/orders/add',
+        payload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+  
+      toast.success('Order placed successfully!');
+  
+      // Clear the cart after successful order
+      await axios.delete('http://localhost:8080/cart/clear', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      setCartItems([]); // Update the cart state
+      setShowPaymentModal(false);
+      // navigate('/orders'); // Redirect to orders page if needed
+    } catch (error) {
+      console.error('Error placing order:', error);
+      toast.error('Failed to place order.');
+    }
   };
+  
+
+  // // Place Order
+  // const handleCheckout = async () => {
+  //   if (!selectedPaymentMethod) {
+  //     toast.error('Please select a payment method');
+  //     return;
+  //   }
+
+  //   try {
+  //     const payload = {
+  //       items: cartItems.map((item) => ({
+  //         product: {
+  //           _id: item.productId,
+  //           name: item.name,
+  //           image: item.image,
+  //           price: item.price,
+  //           quantity: item.quantity,
+  //         },
+  //       })),
+  //       paymentMethod: selectedPaymentMethod,
+  //     };
+
+  //     const response = await axios.post(
+  //       'http://localhost:8080/orders/add',
+  //       payload,
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
+
+  //     toast.success('Order placed successfully!');
+  //     setCartItems([]); // Clear the cart after successful order
+  //     setShowPaymentModal(false);
+  //     // navigate('/orders'); // Redirect to orders page if needed
+  //   } catch (error) {
+  //     console.error('Error placing order:', error);
+  //     toast.error('Failed to place order.');
+  //   }
+  // };
 
   // Initial Load
   useEffect(() => {
@@ -91,23 +169,18 @@ const Cart = () => {
                   key={item.productId}
                   className="list-group-item d-flex justify-content-between align-items-center mb-3"
                 >
-                  {/* Product Image */}
                   <img
                     src={item.image || 'https://via.placeholder.com/100'}
                     alt={item.name || 'Product Image'}
                     className="img-thumbnail"
                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
                   />
-
-                  {/* Product Details */}
                   <div className="ms-3 flex-grow-1">
                     <h5 className="mb-1">{item.name}</h5>
                     <p className="mb-0">Price: ₹{item.price}</p>
                     <p className="mb-0">Quantity: {item.quantity}</p>
                   </div>
-
                   <div className="text-center pe-3">
-                    {/* Quantity Controls */}
                     <div className="btn-group mb-2">
                       <button
                         onClick={() => updateQuantity(item.productId, 'decrease')}
@@ -127,8 +200,6 @@ const Cart = () => {
                       </button>
                     </div>
                     <br />
-
-                    {/* Remove Button */}
                     <button
                       onClick={() => removeItemFromCart(item.productId)}
                       className="btn btn-danger btn-sm"
@@ -140,7 +211,6 @@ const Cart = () => {
               ))}
             </ul>
           </div>
-
           {/* Order Summary */}
           <div className="col-lg-4">
             <div className="card">
@@ -161,7 +231,7 @@ const Cart = () => {
                   <span>Free</span>
                 </div>
                 <hr />
-                <div className="d-flex justify-content-between font-weight-bold">
+                <div className="d-flex justify-content-between fw-bold">
                   <span>Total</span>
                   <span>
                     ₹
@@ -171,7 +241,69 @@ const Cart = () => {
                     )}
                   </span>
                 </div>
-                <button className="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                <button
+                  className="btn btn-success w-100 mt-3"
+                  onClick={() => setShowPaymentModal(true)}
+                >
+                  Proceed to Checkout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPaymentModal && (
+        <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Select Payment Method</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setShowPaymentModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="form-check">
+                  <input
+                    type="radio"
+                    className="form-check-input"
+                    name="paymentMethod"
+                    id="cod"
+                    value="Cash on Delivery"
+                    onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                  />
+                  <label className="form-check-label" htmlFor="cod">
+                    Cash on Delivery
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    type="radio"
+                    className="form-check-input"
+                    name="paymentMethod"
+                    id="online"
+                    value="Online Payment"
+                    onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                  />
+                  <label className="form-check-label" htmlFor="online">
+                    Online Payment
+                  </label>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setShowPaymentModal(false)}
+                >
+                  Cancel
+                </button>
+                <button className="btn btn-primary" onClick={handleCheckout}>
+                  Confirm Payment
+                </button>
               </div>
             </div>
           </div>
