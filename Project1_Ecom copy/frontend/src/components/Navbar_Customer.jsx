@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    location.reload()
+    location.reload();
+    navigate("/")
+    
   };
 
   return (

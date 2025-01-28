@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
+const User =require('../models/User');
 const {authenticate,authorizeRole}= require('./middleware'); // Middleware to validate user authentication
 
 // POST /orders/add - Create an order from frontend data
@@ -76,5 +77,68 @@ router.get('/', authenticate, async (req, res) => {
     }
   });
 
+  router.get('/place', authenticate, authorizeRole('admin', 'vendor'), async (req, res) => {
+    try {
+      // Fetch the first placed order
+      const order = await Order.findOne({ status: "Placed" })
+        .populate('userId', 'name location phone'); // Populate user fields
+ 
+      if (!order) {
+        return res.status(404).json({ message: "No placed orders found" });
+      }
+ 
+      // Prepare the response with user details and product details
+      const response = {
+        orderId: order._id,
+        status: order.status,
+        customer: {
+          name: order.userId.name,
+          location: order.userId.location,
+          contact: order.userId.phone,
+        },
+        items: order.items.map((item) => ({
+          productId: item.product._id,
+          name: item.product.name,
+          image: item.product.image,
+          price: item.product.price,
+          description: item.product.description,
+          quantity: item.product.quantity,
+        })),
+      };
+ 
+      return res.status(200).json(response);
+    } catch (error) {
+      console.error("Error fetching placed orders:", error); // Log error on the server side
+      return res.status(500).json({ message: "An error occurred while fetching orders", error: error.message });
+    }
+ });
+ 
+  
+
+// Endpoint to change order status to 'Out for Delivery'
+router.patch('/:orderId', authenticate,authorizeRole('admin', 'vendor'), async (req, res) => {
+    const { orderId } = req.params;
+    const { status } = req.body;
+  
+    if (status !== 'Out for Delivery') {
+      return res.status(400).json({ message: 'Invalid status update' });
+    }
+  
+    try {
+      const order = await Order.findById(orderId);
+      
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+  
+      order.status = status;
+      await order.save(); // Save the updated order
+  
+      res.status(200).json({ message: 'Order status updated to Out for Delivery' });
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      return res.status(500).json({ message: "Error updating order status" });
+    }
+  });
 
 module.exports = router;

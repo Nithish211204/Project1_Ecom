@@ -32,7 +32,10 @@ const Login = () => {
         } else if (role === "customer") {
           toast.success("Customer logged in successfully!");
           navigate( "/");
-        } else {
+        } else if (role === "vendor") {
+          toast.success("Vendor logged in successfully!");
+          navigate( "/allorder");
+        }else {
           toast.error("Unknown role.");
         }
         window.location.reload();

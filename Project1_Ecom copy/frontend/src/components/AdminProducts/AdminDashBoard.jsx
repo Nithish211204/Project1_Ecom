@@ -13,6 +13,9 @@ const goToAdd = () => {
 const goToVendor = () => {
   navigate("/vendor");
 };
+const goToAllOrder = () => {
+  navigate("/allorder");
+};
   // console.log(token);
   return (
     <nav >
@@ -20,11 +23,14 @@ const goToVendor = () => {
       <button  onClick={goToDelete}>
             Delete Product
         </button>
+        <button  onClick={goToAllOrder}>
+            All Orders
+        </button>
         <button  onClick={goToAdd}>
                 Add Product
             </button>  
-        <button  onClick={goToDelete}>
-            Delete Product
+        <button  onClick={goToVendor}>
+           Add Vendor
         </button> 
       
       </ul>
