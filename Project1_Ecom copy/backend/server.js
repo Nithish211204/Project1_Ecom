@@ -98,6 +98,42 @@ app.post('/verify-otp', (req, res) => {
     }
 });
 
+// Endpoint to get saved addresses of the user
+// Assuming you have a User model and that addresses are stored in the user document
+app.get('/user/addresses', async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json(user.addresses || []);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error fetching addresses' });
+    }
+  });
+
+  // Place order endpoint
+app.post('/orders/add', async (req, res) => {
+    try {
+      const { items, address, paymentMethod } = req.body;
+      const order = new Order({
+        userId: req.user.id,  // Assuming user is authenticated
+        items,
+        address,
+        paymentMethod,
+        status: 'Placed',
+      });
+  
+      await order.save();
+      res.status(201).json({ message: 'Order placed successfully', order });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error placing order' });
+    }
+  });
+  
+  
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);

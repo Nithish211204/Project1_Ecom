@@ -153,16 +153,22 @@ router.post('/decrease/:productId', authenticate, async (req, res) => {
 
 router.delete('/clear', authenticate, async (req, res) => {
     try {
+      // Find the user's cart using their user ID
       const cart = await Cart.findOne({ userId: req.user.id });
-      if (!cart) return res.status(404).send({ message: 'Cart not found' });
+      if (!cart) {
+        return res.status(404).send({ message: 'Cart not found' });
+      }
   
+      // Empty the items array to clear the cart
       cart.items = [];
+  
+      // Save the cart after clearing the items
       await cart.save();
   
       res.send({ message: 'Cart cleared successfully', cart });
     } catch (err) {
-      console.error(err);
-      res.status(500).send('Server Error');
+      console.error('Error clearing cart:', err);
+      res.status(500).send({ message: 'Server error while clearing the cart' });
     }
   });
   
