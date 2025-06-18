@@ -16,10 +16,12 @@ const ProductPage = () => {
         const fetchProducts = async () => {
             try {
                 const response = await axios.get("http://localhost:8080/products");
+                console.log("Fetched products:", response.data); // Log the fetched products
                 setProducts(response.data);
                 setLoading(false);
             } catch (err) {
                 setError("Failed to fetch products");
+                console.error("Error fetching products:", err);
                 setLoading(false);
             }
         };
