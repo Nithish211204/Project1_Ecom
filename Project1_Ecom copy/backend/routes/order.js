@@ -142,52 +142,75 @@ router.patch('/:orderId', authenticate,authorizeRole('admin', 'vendor'), async (
   });
 
 
-  router.post('/add', authenticate, async (req, res) => {
+router.post('/add', authenticate, async (req, res) => {
+  try {
     const { items, address, paymentMethod } = req.body;
 
-    if (!items || !Array.isArray(items) || items.length === 0 || !address || !paymentMethod) {
-        return res.status(400).send({ error: 'All fields are required' });
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: 'Cart items are required' });
     }
 
-    try {
-        console.log('Received Order Data:', req.body); // Debugging
-
-        const newOrder = new Order({
-            userId: req.user.id,
-            items: items.map(item => {
-                if (!item.product || isNaN(item.product.price) || isNaN(item.quantity)) {
-                    throw new Error('Invalid item data: price and quantity must be numbers');
-                }
-                return {
-                    product: {
-                        _id: item.product._id,
-                        name: item.product.name,
-                        price: Number(item.product.price),
-                    },
-                    quantity: Number(item.quantity),
-                    total: Number(item.product.price) * Number(item.quantity),
-                };
-            }),
-            address,
-            paymentMethod,
-        });
-
-        await newOrder.save();
-        res.status(200).send({ message: 'Order placed successfully', order: newOrder });
-    } catch (err) {
-        console.error('Error placing order:', err);
-        res.status(500).send({ error: err.message });
+    if (!address || typeof address !== 'string' || address.trim() === '') {
+      return res.status(400).json({ error: 'Address is required' });
     }
+
+    if (!paymentMethod) {
+      return res.status(400).json({ error: 'Payment method is required' });
+    }
+
+    const processedItems = items.map((item) => {
+      const { product } = item;
+
+      if (
+        !product ||
+        !product._id ||
+        !product.name ||
+        isNaN(product.price) ||
+        isNaN(product.quantity)
+      ) {
+        throw new Error('Invalid product data');
+      }
+
+      return {
+        product: {
+          _id: product._id,
+          name: product.name,
+          price: Number(product.price),
+          quantity: Number(product.quantity),
+        },
+        total: Number(product.price) * Number(product.quantity),
+      };
+    });
+
+    const order = new Order({
+      userId: req.user.id,
+      items: processedItems,
+      address: [
+        {
+          phone: req.user.phone, // You can replace this with actual user phone if available
+          name: req.user.name || 'Customer',
+          location: address,
+        },
+      ],
+      paymentMethod,
+    });
+
+    await order.save();
+    res.status(200).json({ message: 'Order placed successfully!', order });
+  } catch (err) {
+    console.error('Order error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
   
-router.get('/user/addresses',authenticate, async (req, res) => {
+router.get('/user/location',authenticate, async (req, res) => {
     try {
       const user = await User.findById(req.user.id);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      res.status(200).json(user.addresses || []);
+      res.status(200).json(user.location);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error fetching addresses' });

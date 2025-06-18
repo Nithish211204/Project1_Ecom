@@ -2,28 +2,31 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
-
 const UserDetails = () => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const navigate = useNavigate();
   const { state } = useLocation();
-  const phone = state?.phone; // Get phone number from state
+  const phone = state?.phone;
 
   const handleSave = async () => {
     if (!name || !location) {
       alert("Name and Location are required.");
       return;
     }
-  
+
     try {
       console.log({ phone, name, location });
-      const response = await axios.post("http://localhost:8080/auth/register", { phone, name, location });
-  
+      const response = await axios.post("http://localhost:8080/auth/register", {
+        phone,
+        name,
+        location,
+      });
+
       if (response.data.token) {
-        localStorage.setItem("authToken", response.data.token); // Store token in localStorage
+        localStorage.setItem("authToken", response.data.token);
         alert("Details saved successfully!");
-        navigate("/"); // Redirect to home page
+        navigate("/");
         window.location.reload();
       }
     } catch (err) {
@@ -31,8 +34,7 @@ const UserDetails = () => {
       alert("Failed to save details. Please try again.");
     }
   };
-  
-  
+
   return (
     <div>
       <h2>Enter Your Details</h2>
@@ -44,10 +46,20 @@ const UserDetails = () => {
       />
       <input
         type="text"
-        placeholder="Location"
+        placeholder="DIGIPIN Location"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
       />
+      <div style={{ marginTop: "4px", fontSize: "0.9em", color: "#555" }}>
+        Not sure about your DIGIPIN?{" "}
+        <a
+          href="https://www.mydigipin.com/p/digipin.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Know your DIGIPIN
+        </a>
+      </div>
       <button onClick={handleSave}>Save</button>
     </div>
   );
